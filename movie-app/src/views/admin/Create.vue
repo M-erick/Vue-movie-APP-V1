@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Create Movie</h2>
-    <form @submit.prevent="updateMovie" class="movie-form">
+    <form @submit.prevent="createMovie" class="movie-form">
       <div class="form-group">
         <label for="title">Title:</label>
         <input type="text" id="title" v-model="formData.title" placeholder="Title">
@@ -40,15 +40,15 @@ const formData = ref({
   rating: null
 });
 
-async function updateMovie() {
+async function createMovie() {
   try {
-    await axios.post(`http://localhost:3000/api/movies/${movieId.value}`, formData.value);
+    await axios.post(`http://localhost:3000/api/movies`, formData.value);
   //  Redirect to the movies list page after 2 seconds
     setTimeout(()=>{
-      router.push('/movies');
+      router.push('/');
     },2000);
   } catch (error) {
-    console.error('Failed to update movie:', error);
+    console.error('Failed to create movie:', error);
   }
 }
 </script>
