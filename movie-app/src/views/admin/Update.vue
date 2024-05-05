@@ -1,11 +1,10 @@
-<!-- UpdateMovie.vue -->
 <template>
   <div>
     <h2>Edit Movie</h2>
     <form @submit.prevent="updateMovie" class="movie-form">
       <div class="form-group">
         <label for="title">Title:</label>
-        <input id="title" v-model="formData.title" placeholder="Title">
+        <input  type="text" id="title" v-model="formData.title" placeholder="Title">
       </div>
       <div class="form-group">
         <label for="description">Description:</label>
@@ -13,7 +12,7 @@
       </div>
       <div class="form-group">
         <label for="genre">Genre:</label>
-        <input id="genre" v-model="formData.genre" placeholder="Genre">
+        <input type="text" id="genre" v-model="formData.genre" placeholder="Genre">
       </div>
       <div class="form-group">
         <label for="releaseDate">Release Date:</label>
@@ -44,7 +43,10 @@ const formData = ref({
 async function updateMovie() {
   try {
     await axios.put(`http://localhost:3000/api/movies/${movieId.value}`, formData.value);
-    // Optionally, you can redirect to the movies list page or show a success message
+   
+    setTimeout(()=>{
+      router.push('/movies');
+    });
   } catch (error) {
     console.error('Failed to update movie:', error);
   }
@@ -52,18 +54,26 @@ async function updateMovie() {
 </script>
 
 <style scoped>
+h2{
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom:2px;
+}
 .movie-form {
   max-width: 400px;
-  margin: 0 auto;
+  margin: 30px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
 label {
   display: block;
-  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 input[type="text"],
@@ -71,18 +81,20 @@ input[type="number"],
 textarea,
 input[type="date"] {
   width: 100%;
-  padding: 0.5rem;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 button {
-  background-color: #007bff;
+  display: block;
+  background-color: crimson;
   color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding:10px;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
 }
 
 button:hover {
