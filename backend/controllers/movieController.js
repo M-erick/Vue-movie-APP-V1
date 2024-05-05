@@ -1,4 +1,3 @@
-// movieController.js
 const Movie = require('../models/Movie');
 
 exports.createMovie = async (req, res) => {
@@ -45,6 +44,7 @@ exports.getMovieById = async (req, res) => {
 exports.updateMovie = async (req, res) => {
   try {
     const { id } = req.params;
+    // destructure the  request body
     const { title, description, genre, releaseDate } = req.body;
     const movieData = {
       title,
