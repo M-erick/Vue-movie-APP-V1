@@ -5,6 +5,8 @@ require('dotenv').config({ path: './config/.env' });
 const { JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
+  
+  // fetch Bearer token form headers
   const token = req.headers['authorization'];
 
   // Check if token is provided
