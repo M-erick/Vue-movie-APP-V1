@@ -8,20 +8,32 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME
 });
 
-exports.createUser = (userData) => {
-    return new Promise((resolve, reject) => {
-        pool.query('INSERT INTO users SET ?', userData, (error, results) => {
-            if (error) reject(error);
-            resolve(results);
-        });
-    });
+exports.createUser = async(userData) => {
+    try {
+        const query = `INSERT INTO users(first_name,last_name,password,email) VALUES(?,?,?,?)`;
+        const[result] =await pool.query(query,[userData.firstName,userData.lastName,userData.password,userData.email]);
+        return result;
+        
+    } catch (error) {
+        throw error;
+        
+    }
+    
 };
 
 exports.findUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
-            if (error) reject(error);
-            resolve(results[0]);
+            if (error) {
+                reject(error);
+            } else {
+                if (results.length === 0) {
+                    resolve(null); // Return null if no user found
+                } else {
+                    resolve(results[0]); // Return the first user found
+                }
+            }
         });
     });
 };
+

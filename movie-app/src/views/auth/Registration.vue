@@ -58,8 +58,7 @@ export default {
 
     successMessage.value = response.data.message;
   //  assessing the token from the local storage
-   const token = response.data.token;
-    localStorage.setItem('token', token);
+   
 
     router.push('/');
   } catch (err) {

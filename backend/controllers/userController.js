@@ -10,9 +10,18 @@ exports.register = async (req, res) => {
      if (!errors.isEmpty()) {
          return res.status(400).json({ errors: errors.array() });
      }
+     const{email,password,firstName,lastName} = req.body;
+     const hashedPassword = await bcrypt.hash(password, 8);
+     const userData={
+        email,
+        firstName,
+        lastName,
+        password:hashedPassword
+        
+     }
     try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 8);
-        const user = await User.createUser({...req.body, password: hashedPassword});
+        // const hashedPassword = await bcrypt.hash(req.body.password, 8);
+        const user = await User.createUser(userData);
         res.status(201).send({ user, message: 'Registered successfully' });
     } catch (error) {
         res.status(500).send(error);
