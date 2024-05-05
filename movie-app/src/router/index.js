@@ -11,9 +11,10 @@ import Read from '../views/admin/DisplayMovie.vue'
 import Add from '../views/admin/Add.vue'
 const routes = [
   {
+    // home routes:update this once functionality is tested
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'Add',
+    component: Add
   },
   {
     path:'/movie/:id',
@@ -23,13 +24,13 @@ const routes = [
   },
   {
     path:'/login',
-    name:Login,
+    name:'Login',
     component:Login
   },
   
   {
     path:'/register',
-    name:Registration,
+    name:'Registration',
     component:Registration
   },
 //  movies routes for admin page
@@ -41,18 +42,18 @@ const routes = [
   // update individual movie items
   {
     path:'/update/:id/edit',
-    name:Update,
+    name:'Update',
     component:Update,
     props: true
   },
-  {
-    path:'/Add',
-    name:Add,
-    component:Add,
-  },
+  // {
+  //   path:'/Add',
+  //   name:'Add',
+  //   component:Add,
+  // },
   {
     path:'/movies',
-    name:Read,
+    name:'Read',
     component:Read
   }
  
