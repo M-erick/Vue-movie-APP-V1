@@ -16,8 +16,8 @@ const Movie = {
     // Create a new movie entry
     createMovie: async (movieData) => {
         try {
-            const query = `INSERT INTO movies (title, description, genre, release_date) VALUES (?, ?, ?, ?)`;
-            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date]);
+            const query = `INSERT INTO movies (title, description, genre, released_date,rating) VALUES (?, ?, ?, ?,?)`;
+            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date,movieData.rating]);
             return result;
         } catch (error) {
             throw error;

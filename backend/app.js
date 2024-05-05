@@ -15,7 +15,7 @@ app.use('/api/users', userRoutes);
 
 //defining movie routes
 const movieRoutes = require('./routes/movieRoutes');
-app.use('api/movie',movieRoutes);
+app.use('/api/movies',movieRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

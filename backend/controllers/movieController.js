@@ -2,15 +2,16 @@ const Movie = require('../models/Movie');
 
 exports.createMovie = async (req, res) => {
   try {
-    const { title, description, genre, releaseDate } = req.body;
+    const { title, description, genre, releaseDate,rating } = req.body;
     const movieData = {
       title,
       description,
       genre,
+      rating,
       release_date: releaseDate
     };
     const result = await Movie.createMovie(movieData);
-    res.status(201).json({ message: 'Movie created successfully', movieId: result.insertId });
+    res.status(201).json({ message: 'Movie created successfully'});
   } catch (error) {
     console.error('Error creating movie:', error);
     res.status(500).json({ error: 'An error occurred while creating movie' });
