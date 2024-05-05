@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const userController = require('../controllers/userController');
+const authenticate = require('../middleware/authenticate');
+
+
+// custom middleware
+router.use(authenticate);
 
 // applied validation on the data
 router.post('/register',[

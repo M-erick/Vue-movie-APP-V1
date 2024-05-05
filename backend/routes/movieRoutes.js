@@ -3,7 +3,7 @@ const router = express.Router();
 const movieController = require('../controllers/movieController');
 const authenticate = require('../middleware/authenticate');
 
-// applying authenticate middleware to movie endpoints
+// applying authenticate middleware to movie endpoints:this should be to selected parts only
 router.use(authenticate);
 
 // Create a new movie
