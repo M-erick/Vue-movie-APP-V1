@@ -30,7 +30,9 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import {useRouter,useRoute} from 'vue-router';
 
+const router = useRouter();
 const movieId = ref(null);
 const formData = ref({
   title: '',
