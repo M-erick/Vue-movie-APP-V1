@@ -2,9 +2,10 @@
   <div class="home-page">
     <!-- Carousel of Images  implement carousel functionality here-->
 
-    <div id="carousel" :carousel="carousel">
+    <!-- :style="{ backgroundImage: `url(${toggleIcons})` }" -->
+    <div id="carousel" :carousel="carousel" >
       <!-- Navbar with Movie Genres -->
-      <nav class="navbar">
+        <nav class="navbar">
         <ul>
             <!-- use style binding here,if a use clicks the navbar set it to color and undeline -->
           <li @click="updateGenre('trending')" id="trendingIcons">Trending</li>
@@ -14,19 +15,29 @@
           <li @click="updateGenre('documentary')">Documentary</li>
           <li @click="updateGenre('movies')">Movies</li>
           <li @click="updateGenre('drama')">Drama</li>
+         
+          <!-- appear only on  the admin side :work on this -->
+          <li  v-if="isAdminUser" @click="handleCreate">Create</li>
+          <li  v-if="isAdminUser" @click="handleUpdate">Movie List</li>
+
+
 
           <!-- Add more genres as needed -->
         </ul>
+       
       </nav>
+
+      
      
     </div>
      <!-- when a user clicks the icons  change the background image:font Awesome icons -->
       <div id="toggle-icons" :toggle-icons="toggleIcons">
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(1)"></i>
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(2)"></i>
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(3)"></i>
-        <i class="fa-regular fa-circle" style="color: white" @click="changeBackground(4)"></i>
+        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(1)" :itemOne="itemOne"></i>
+        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(2)" :itemTwo="itemTwo"></i>
+        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(3)" :itemThree="itemThree"></i>
+        <i class="fa-regular fa-circle" style="color: white" @click="changeBackground(4)" :itemFour="itemFour"></i>
       </div>
+      
     <!-- search Bar -->
     <form @submit.prevent="fetchMovies()" class="search-box">
       <input
@@ -53,15 +64,15 @@
         <div class="searchedItems">
         <!-- the data below is dynamic:update it with the fetched data -->
 
-         <div class="top-pick-card">
-                    <router-link to="'/movie/' +movie.id">
+         <div  v-for="movie in topPicks" :key="movie.id"  class="top-pick-card">
+                    <router-link :to="'/movie/' + movie.id">
                 <!--  img:fetched image from the data -->
                         <img src="../../assets/BlackAdam.jpeg"  style=" border-radius: 5px; " alt="Image 1">
                         <div class="text-bottom-left">
                             <div style="padding-bottom:20px ;">
 
                                 <!-- Below should be the movie Rating -->
-                                <p >Titanic</p>
+                                <p  style="color:white">{{ movie.title }}</p>
                                  <div class="top-pick-card-star">
                                     <i style=" font-size:14px;color: crimson;" class="fa-solid fa-star "></i>
                                     <i style="font-size:14px;color: crimson;" class="fa-solid fa-star"></i>
@@ -74,66 +85,7 @@
                      </router-link>
             </div>
 
-           <div class="top-pick-card">
-                    <router-link to="/login">
-                <!--  img:fetched image from the data -->
-                        <img src="../../assets/BlackAdam.jpeg"  style=" border-radius: 5px; " alt="Image 1">
-                        <div class="text-bottom-left">
-                            <div style="padding-bottom:20px ;">
-
-                                <!-- Below should be the movie Rating -->
-                                <p >Titanic</p>
-                                 <div class="top-pick-card-star">
-                                    <i style=" font-size:14px;color: crimson;" class="fa-solid fa-star "></i>
-                                    <i style="font-size:14px;color: crimson;" class="fa-solid fa-star"></i>
-                                    <i style="font-size:14px; color:black" class="fa-solid fa-star"></i>
-                
-                
-                                </div>
-                            </div>
-                        </div>
-                     </router-link>
-            </div>
-             <div class="top-pick-card">
-                    <router-link to="/login">
-                <!--  img:fetched image from the data -->
-                        <img src="../../assets/BlackAdam.jpeg"  style=" border-radius: 5px; " alt="Image 1">
-                        <div class="text-bottom-left">
-                            <div style="padding-bottom:20px ;">
-
-                                <!-- Below should be the movie Rating -->
-                                <p >Titanic</p>
-                                 <div class="top-pick-card-star">
-                                    <i style=" font-size:14px;color: crimson;" class="fa-solid fa-star "></i>
-                                    <i style="font-size:14px;color: crimson;" class="fa-solid fa-star"></i>
-                                    <i style="font-size:14px; color:black" class="fa-solid fa-star"></i>
-                
-                
-                                </div>
-                            </div>
-                        </div>
-                     </router-link>
-            </div>
-            <div class="top-pick-card">
-                    <router-link to="/login">
-                <!--  img:fetched image from the data -->
-                        <img src="../../assets/BlackAdam.jpeg"  style=" border-radius: 5px; " alt="Image 1">
-                        <div class="text-bottom-left">
-                            <div style="padding-bottom:20px ;">
-
-                                <!-- Below should be the movie Rating -->
-                                <p >Titanic</p>
-                                 <div class="top-pick-card-star">
-                                    <i style=" font-size:14px;color: crimson;" class="fa-solid fa-star "></i>
-                                    <i style="font-size:14px;color: crimson;" class="fa-solid fa-star"></i>
-                                    <i style="font-size:14px; color:black" class="fa-solid fa-star"></i>
-                
-                
-                                </div>
-                            </div>
-                        </div>
-                     </router-link>
-            </div>
+           
             
                     
 
@@ -149,98 +101,16 @@
       <div class="searchedItems">
         <!-- the data below is dynamic:update it with the fetched data -->
 
-          <div class="image-with-text">
-                     <router-link to="/login">
-                
-                <!--  img:fetched image from the data -->
-                        <img src="../../assets/BlackAdam.jpeg" width="350" style=" border-radius: 5px; " alt="Image 1">
-                
-                       
-                       <!-- replace below with movie genre -->
-                        <p class="text-top-right">Documentary</p> 
-                        <div class="text-bottom-left">
-                            <div style="padding-bottom:20px ;">
 
-                                <!-- Below should be the movie title -->
-                                <p>3 Days Great Migrations Safari</p>
-                                <!-- fetch releaseDate  -->
-                                <p><span>Release Date: 2nd May 2024</span></p>
-                                
-                                <!-- the rating will be saved in true or false,then we update the part below -->
-                                <div style="margin-top:-13px; display:flex; justify-content:left;gap:2px; ">
-                                    <i style=" font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star "></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;" class="fa-solid fa-star"></i>
-                
-                
-                                </div>
-                            </div>
-                        </div>
-                    </router-link>
-
-                    </div>
-
-        
-         <div class="image-with-text">
-                        <router-link to="/login">
-
+                     <div v-for="movie in filteredMovies" :key="movie.id" class="image-with-text">
                 
                         <img src="../../assets/BlackAdam.jpeg" width="350" style=" border-radius: 5px; " alt="Image 1">
                 
-                        <p class="text-top-right">Series</p>
+                        <p class="text-top-right">{{ movie.genre }}</p>
                         <div class="text-bottom-left">
                             <div style="padding-bottom:20px ;">
-                                <p>3 Days Great Migrations Safari</p>
-                                 <p><span>Release Date: 2nd May 2024</span></p>
-
-                                
-                                <div style="margin-top:-13px; display:flex; justify-content:left;gap:2px; ">
-                                    <i style=" font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star "></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;" class="fa-solid fa-star"></i>
-                
-                                </div>
-                            </div>
-                        </div>
-                     </router-link>
-
-                    </div>
-                     <div class="image-with-text">
-                
-                        <img src="../../assets/BlackAdam.jpeg" width="350" style=" border-radius: 5px; " alt="Image 1">
-                
-                        <p class="text-top-right">Series</p>
-                        <div class="text-bottom-left">
-                            <div style="padding-bottom:20px ;">
-                                <p>3 Days Great Migrations Safari</p>
-                                 <p><span>Release Date: 2nd May 2024</span></p>
-
-                                
-                                <div style="margin-top:-13px; display:flex; justify-content:left;gap:2px; ">
-                                    <i style=" font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star "></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;" class="fa-solid fa-star"></i>
-                
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                     <div class="image-with-text">
-                
-                        <img src="../../assets/BlackAdam.jpeg" width="350" style=" border-radius: 5px; " alt="Image 1">
-                
-                        <p class="text-top-right">Movie</p>
-                        <div class="text-bottom-left">
-                            <div style="padding-bottom:20px ;">
-                                <p>3 Days Great Migrations Safari</p>
-                                <p><span>Release Date: 2nd May 2024</span></p>
+                                <p>{{ movie.title }}</p>
+                                <p><span>Release Date: {{ movie.releaseDate }}</span></p>
 
                                 <div style="margin-top:-13px; display:flex; justify-content:left;gap:2px; ">
                                     <i style=" font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star "></i>
@@ -258,16 +128,6 @@
                     </div>
                     
       </div>
-
-      <!-- <ul>
-      <li v-for="movie in filteredMovies" :key="movie.id">
-        <h3>{{ movie.title }}</h3>
-        <p>{{ movie.description }}</p>
-        <p>Genre: {{ movie.genre }}</p>
-        <p>Release Date: {{ movie.releaseDate }}</p>
-        <p>Rating: {{ movie.rating }}</p>
-      </li>
-    </ul> -->
     </div>
   </div>
 </template>
@@ -275,16 +135,32 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
+import{useRouter,useRoute} from 'vue-router';
 
-const carousel = ref("");
+// handling routes:
+const router = useRouter();
+const route = useRoute();
+const carousel = ref(null);
 const toggleIcons = ref("");
 const topPicks = ref([]);
 const selectedGenre = ref("tv");
 const likedMovies = ref(new Set());
 
-// search for movies variables
+// set user default to true:default login in user is admin 
+const isAdminUser = ref(true);
+
+const defaultTop = 7;
+
+// toggle items
+const itemOne = ref("");
+const itemTwo = ref("");
+const itemThree = ref("");
+const itemFour = ref("");
+
+
+// search  movies variables
 const searchQuery = ref("");
-const movies = ref("");
+const movies = ref([]);
 
 // fetch movies from movie endpoint:add the endpoint
 async function fetchMovies() {
@@ -293,6 +169,8 @@ async function fetchMovies() {
       `http://localhost:3000/api/movies?search=${searchQuery.value}`
     );
     movies.value = response.data;
+    //cleare search query
+    searchQuery.value = "";
   } catch (error) {
     console.error("Failed to fetch movies:", error);
     movies.value = [];
@@ -301,7 +179,9 @@ async function fetchMovies() {
 
 //:uncomment the onmounted part once data is fetchedFetch top picks for the selected genre when the component is mounted
 onMounted(fetchTopPicks);
-onMounted(fetchMovies);
+
+// searched data should dissappear once page is reloaded
+// onMounted(fetchMovies);
 
 // to filter  movie  from the database based on search Parameter:
 const filteredMovies = computed(() => {
@@ -314,7 +194,7 @@ const filteredMovies = computed(() => {
 async function fetchTopPicks() {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/movies?genre=${selectedGenre.value}&top=true`
+      `http://localhost:3000/api/movies?top=${defaultTop}`
     );
     topPicks.value = response.data;
   } catch (error) {
@@ -328,14 +208,13 @@ function updateGenre(genre) {
   fetchTopPicks();
 }
 
-// Function to check if a movie is liked by the user
 function isLiked(movieId) {
   return likedMovies.value.has(movieId);
 }
 
 // Function to handle liking a movie
 function likeMovie(movieId) {
-  // Add or remove the movie ID from the liked movies set
+  // Add or remove the movie ID from the liked movies set:work on this later
   if (likedMovies.value.has(movieId)) {
     likedMovies.value.delete(movieId);
   } else {
@@ -343,27 +222,37 @@ function likeMovie(movieId) {
   }
 }
 
+// redirect use to creat page
+const handleCreate = ()=>{
+  router.push('/create');
+}
+
+const handleUpdate =()=>{
+  router.push('/movies');
+}
+
 
 // change background Image on the topArea
-const changeBackground = async(imageNumber)=> {
+const changeBackground = async (imageNumber) => {
   // Example logic to change background image based on imageNumber
+  let imageUrl = '';
   switch (imageNumber) {
     case 1:
-      document.getElementById('carousel').style.backgroundImage = 'url("../../assets/aquaman.jpeg")';
+      imageUrl = '../../assets/aquaman.jpeg';
       break;
     case 2:
-      document.getElementById('carousel').style.backgroundImage = 'url("../../assets/logo.png")';
-      break;
     case 3:
-      document.getElementById('carousel').style.backgroundImage = 'url("../../assets/logo.png")';
-      break;
     case 4:
-      document.getElementById('carousel').style.backgroundImage = 'url("../../assets/logo.png")';
+      imageUrl = '../../assets/logo.png';
       break;
     default:
       break;
   }
-}
+  toggleIcons.value = imageUrl;
+};
+
+
+
 </script>
 
 <style scoped>
@@ -378,6 +267,9 @@ const changeBackground = async(imageNumber)=> {
   overflow: hidden;
   padding-top: 30px;
   justify-content: center;
+}
+.searchedItems p {
+color: crimson;
 }
 .searchedItems img {
     
