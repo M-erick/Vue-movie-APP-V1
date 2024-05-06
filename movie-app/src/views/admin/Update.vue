@@ -20,7 +20,7 @@
       </div>
       <div class="form-group">
         <label for="rating">Rating:</label>
-        <input type="number" id="rating" v-model.number="formData.rating" min="1" max="10" placeholder="Rating">
+        <input type="number" id="rating" v-model="formData.rating" min="1" max="10" placeholder="Rating">
       </div>
       <button type="submit">Update</button>
     </form>
@@ -28,25 +28,50 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import axios from 'axios';
+import{useRouter,useRoute} from 'vue-router';
 
+const  router = useRouter();
+const route = useRoute();
 const movieId = ref(null);
 const formData = ref({
   title: '',
   description: '',
   genre: '',
   releaseDate: '',
-  rating: null
+  rating: ''
 });
 
+onMounted(() => {
+  movieId.value = route.params.id;
+  fetchMovieDetails();
+});
+
+async function fetchMovieDetails() {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/movies/${movieId.value}`);
+    const movie = response.data;
+    // Set form data with movie details
+    formData.value = {
+      title: movie.title,
+      description: movie.description,
+      genre: movie.genre,
+      releaseDate: movie.released_date,
+      rating: movie.rating
+    };
+  } catch (error) {
+    console.error('Failed to fetch movie details:', error);
+  }
+}
+
+// how can we define this route
+// const movieId = route.params.id;
 async function updateMovie() {
   try {
     await axios.put(`http://localhost:3000/api/movies/${movieId.value}`, formData.value);
-   
-    setTimeout(()=>{
-      router.push('/movies');
-    });
+    // Redirect to movies list after updating
+    router.push('/movies');
   } catch (error) {
     console.error('Failed to update movie:', error);
   }
