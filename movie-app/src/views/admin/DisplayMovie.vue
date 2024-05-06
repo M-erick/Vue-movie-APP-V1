@@ -1,13 +1,16 @@
-<!-- ReadMovies.vue -->
 <template>
-  <div>
+  <div class="movies-container">
     <h2>Movies</h2>
-    <ul>
-      <li v-for="movie in movies" :key="movie.id">
-        <h3>{{ movie.title }}</h3>
-        <p>{{ movie.description }}</p>
-        <button @click="deleteMovie(movie.id)">Delete</button>
-        <button @click="editMovie(movie.id)">Edit</button>
+    <ul class="movies-list">
+      <li v-for="movie in movies" :key="movie.id" class="movie-item">
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <p>{{ movie.description }}</p>
+        </div>
+        <div class="movie-buttons">
+          <button class="delete-button" @click="deleteMovie(movie.id)">Delete</button>
+          <button class="edit-button" @click="editMovie(movie.id)">Edit</button>
+        </div>
       </li>
     </ul>
   </div>
@@ -16,11 +19,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import{ useRouter} from 'vue-router';
-
+import { useRouter } from 'vue-router';
 
 const movies = ref([]);
-const  router = useRouter();
+const router = useRouter();
 
 async function fetchMovies() {
   try {
@@ -43,9 +45,61 @@ async function deleteMovie(movieId) {
   }
 }
 
- async function editMovie(movieId) {
+async function editMovie(movieId) {
   // Implement edit functionality, e.g., redirect to edit page or show modal
-
   router.push(`/update/${movieId}/edit`);
 }
 </script>
+
+<style scoped>
+.movies-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.movies-list {
+  list-style: none;
+  padding: 0;
+}
+
+.movie-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.movie-info {
+  flex-grow: 1;
+}
+
+.movie-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.delete-button, .edit-button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+}
+</style>
