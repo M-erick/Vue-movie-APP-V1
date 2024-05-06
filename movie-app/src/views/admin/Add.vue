@@ -167,7 +167,7 @@ const movies = ref([]);
 async function fetchMovies() {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/movies?search=${searchQuery.value}`
+      `http://localhost:3000/api/movies/search?searchQuery=${searchQuery.value}`
     );
     movies.value = response.data;
     //cleare search query
@@ -259,6 +259,7 @@ const changeBackground = async (imageNumber) => {
       imageUrl = '../../assets/aquaman.jpeg';
       break;
     case 2:
+      itemOne.style.backgroundImage="url()";
     case 3:
     case 4:
       imageUrl = '../../assets/logo.png';
