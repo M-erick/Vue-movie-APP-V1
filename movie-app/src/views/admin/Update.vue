@@ -65,7 +65,7 @@ async function fetchMovieDetails() {
   }
 }
 
-// how can we define this route
+// how can we define this route:research
 // const movieId = route.params.id;
 async function updateMovie() {
   try {
