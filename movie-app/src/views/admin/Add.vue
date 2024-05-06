@@ -136,6 +136,8 @@
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import{useRouter,useRoute} from 'vue-router';
+import jwt_decode from "jwt-decode";
+
 
 // handling routes:
 const router = useRouter();
@@ -147,7 +149,6 @@ const selectedGenre = ref("tv");
 const likedMovies = ref(new Set());
 
 // set user default to true:default login in user is admin 
-const isAdminUser = ref(true);
 
 const defaultTop = 7;
 
@@ -230,6 +231,23 @@ const handleCreate = ()=>{
 const handleUpdate =()=>{
   router.push('/movies');
 }
+
+const isAdminUser = computed(()  => {
+  const token = localStorage.getItem('token');
+  const role_id = localStorage.getItem('role_id');
+  if (token) {
+
+    // no need of decoding the token
+      // const decodedToken = jwt_decode(token);
+      if (role_id === "1") {
+        return true;
+      } else {
+        return false;
+      }
+      console.error("Error decoding JWT token:", error);
+    }
+  }
+)
 
 
 // change background Image on the topArea
