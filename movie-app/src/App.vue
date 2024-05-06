@@ -5,13 +5,13 @@
         <h1><span>LITE</span>Movies</h1>
       </router-link>
       <div class="user-details">
-        <router-link v-if="!isLoggedIn" to="/login" @click="login">
+        <router-link v-if="!isAdminUser" to="/login" @click="login">
           <h5>Login</h5>
         </router-link>
         <router-link v-else to="/logout" @click="logout">
           <h5>Logout</h5>
         </router-link>
-        <router-link v-if="isLoggedIn" to="/profile">
+        <router-link v-if="isAdminUser" to="/profile">
           <h5>Profile</h5>
         </router-link>
       </div>
@@ -23,7 +23,7 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref,computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const isLoggedIn = ref(false); 
@@ -44,6 +44,24 @@ const checkLoginStatus=()=> {
 }
 
 checkLoginStatus();
+
+const isAdminUser = computed(()  => {
+  const token = localStorage.getItem('token');
+  const role_id = localStorage.getItem('role_id');
+  if (token) {
+
+    // no need of decoding the token
+      // const decodedToken = jwt_decode(token);
+      if (role_id === "1") {
+        return true;
+      } else {
+        return false;
+      }
+      console.error("Error decoding JWT token:", error);
+    }
+  }
+)
+
 </script>
 
 <style lang="scss">
