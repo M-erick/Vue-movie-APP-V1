@@ -16,8 +16,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import{ useRouter} from 'vue-router';
+
 
 const movies = ref([]);
+const  router = useRouter();
 
 async function fetchMovies() {
   try {
@@ -40,7 +43,9 @@ async function deleteMovie(movieId) {
   }
 }
 
-function editMovie(movieId) {
+ async function editMovie(movieId) {
   // Implement edit functionality, e.g., redirect to edit page or show modal
+
+  router.push(`/update/${movieId}/edit`);
 }
 </script>
