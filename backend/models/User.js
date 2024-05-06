@@ -10,8 +10,16 @@ const pool = mysql.createPool({
 
 exports.createUser = async(userData) => {
     try {
-        const query = `INSERT INTO users(first_name,last_name,password,email) VALUES(?,?,?,?)`;
-        const[result] =await pool.query(query,[userData.firstName,userData.lastName,userData.password,userData.email]);
+
+        // const roleIdQuery = 'SELECT id FROM roles WHERE name = "user"';
+        // const [roleResult] = await pool.query(roleIdQuery);
+        // const roleId = roleResult[0].id;
+
+        // assigned a default user role_id here :will update it to be dynamic later
+        const roleId = 1;
+
+        const query = `INSERT INTO users(first_name,last_name,password,email,role_id) VALUES(?,?,?,?,?)`;
+        const[result] =await pool.query(query,[userData.firstName,userData.lastName,userData.password,userData.email,roleId]);
         return result;
         
     } catch (error) {

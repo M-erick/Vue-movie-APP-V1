@@ -49,36 +49,21 @@ const Movie = {
     // Update a movie
     updateMovie: async (id, movieData) => {
         try {
-            const query = `UPDATE movies SET title = ?, description = ?, genre = ?, release_date = ? WHERE id = ?`;
-            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date, id]);
+            const query = `UPDATE movies SET title = ?, description = ?, genre = ?, released_date = ?,rating= ? WHERE id = ?`;
+            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date,movieData.rating, id]);
             return result;
         } catch (error) {
             throw error;
         }
     },
-    searchMovies: async (params) => {
-        let baseQuery = `SELECT * FROM movies WHERE 1 = 1`;
-        const filterParams = [];
+    searchMovies: async (searchQuery) => {
 
-        if (params.title) {
-            baseQuery += ` AND title LIKE ?`;
-            filterParams.push(`%${params.title}%`); // Using LIKE for partial matches
-        }
-        if (params.genre) {
-            baseQuery += ` AND genre = ?`;
-            filterParams.push(params.genre);
-        }
-        if (params.releaseYear) {
-            baseQuery += ` AND YEAR(release_date) = ?`;
-            filterParams.push(params.releaseYear);
-        }
-        if (params.rating) {
-            baseQuery += ` AND rating >= ?`;
-            filterParams.push(params.rating);
-        }
+      
 
         try {
-            const [results] = await pool.query(baseQuery, filterParams);
+            const query = `SELECT * FROM movies WHERE title LIKE ?`;
+
+            const [results] = await pool.query(query, [`%${searchQuery}%`]);
             return results;
         } catch (error) {
             throw error;
@@ -95,10 +80,10 @@ const Movie = {
             throw error;
         }
     },
-    getTopMoviesByGenre:async(genre)=> {
+    getTopMoviesByGenre:async(params)=> {
         try {
-          const query = 'SELECT * FROM movies WHERE genre = ? AND top = true';
-          const [results] = await pool.query(query, [genre]);
+        const query = 'SELECT * FROM movies WHERE rating >= ?'; 
+        const [results] = await pool.query(query, [params]);
           return results;
         } catch (error) {
           throw error;

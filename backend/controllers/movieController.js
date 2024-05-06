@@ -46,11 +46,12 @@ exports.updateMovie = async (req, res) => {
   try {
     const { id } = req.params;
     // destructure the  request body
-    const { title, description, genre, releaseDate } = req.body;
+    const { title, description, genre, releaseDate,rating } = req.body;
     const movieData = {
       title,
       description,
       genre,
+      rating,
       release_date: releaseDate
     };
     await Movie.updateMovie(id, movieData);
@@ -75,16 +76,18 @@ exports.searchMovies = async (req, res) => {
   try {
     const { searchQuery } = req.query;
     const movies = await Movie.searchMovies(searchQuery);
+    console.log(searchQuery);
     res.json(movies);
   } catch (error) {
     console.error('Error searching movies:', error);
     res.status(500).json({ error: 'An error occurred while searching movies' });
   }
 };
+// rename the method below after it works:getTopMovieByRating
 exports.getTopMoviesByGenre = async (req, res) => {
   try {
-    const { genre } = req.query;
-    const movies = await Movie.getTopMoviesByGenre(genre);
+    const { defaultTop} = req.query;
+    const movies = await Movie.getTopMoviesByGenre(defaultTop);
     res.json(movies);
   } catch (error) {
     console.error('Error fetching top movies by genre:', error);
