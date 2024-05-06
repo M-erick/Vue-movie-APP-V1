@@ -34,6 +34,7 @@
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter,useRoute} from 'vue-router';
 
 export default {
   setup() {
@@ -41,6 +42,8 @@ export default {
     const password = ref('');
     const firstName =ref('');
     const lastName = ref('');
+    const router  = useRouter();
+    const route = useRoute();
 
     // variable holding message 
     const successMessage = ref('');
