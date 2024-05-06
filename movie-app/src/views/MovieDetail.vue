@@ -1,11 +1,12 @@
 <!-- MovieDetailInfo.vue -->
 <template>
   <div class="movie-detail-info">
-    <h2>{{ movie.title }}</h2>
+    <div v-if="movie">
+      <h2>{{ movie.title }}</h2>
     <div class="movie-details">
-      <div class="movie-image">
+      <!-- <div class="movie-image">
         <img :src="movie.image" :alt="movie.title">
-      </div>
+      </div> -->
       <div class="movie-description">
         <p>{{ movie.description }}</p>
         <p>Rating: {{ movie.rating }}</p>
@@ -14,30 +15,40 @@
         <p v-if="isLiked">You liked this movie!</p>
       </div>
     </div>
+
+    </div>
+    <div v-else>
+      <p>Loading...</p>
+
+    </div>
+   
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
 import axios from 'axios';
 
 const movie = ref(null);
 const router = useRouter();
 const isLiked = ref(false);
-
+const route = useRoute();
 // message to be sent when a user likes a movie
 const message = ref('');
 
-onMounted(async () => {
-  const movieId = router.currentRoute.value.params.id;
+onMounted(fetchMovie);
+async function fetchMovie() {
+  const movieID = route.params.id;
+  console.log(movieID);
   try {
-    const response = await axios.get(`http://localhost:3000/api/movies/${movieId}`);
+    const response = await axios.get(`http://localhost:3000/api/movies/${movieID}`);
     movie.value = response.data;
   } catch (error) {
-    console.error('Failed to fetch movie details:', error);
+    console.error('Failed to fetch movie:', error);
+    movie.value = null;
   }
-});
+}
 const likeMovie =()=> {
   // Send a request to your backend API to record the like for the movie
   isLiked.value = true;
