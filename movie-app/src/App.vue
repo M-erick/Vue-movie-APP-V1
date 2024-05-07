@@ -5,13 +5,13 @@
         <h1><span>LITE</span>Movies</h1>
       </router-link>
       <div class="user-details">
-        <router-link v-if="!isAdminUser" to="/login" @click="login">
+        <router-link v-if="!checkLoginStatus" to="/login" @click="login">
           <h5>Login</h5>
         </router-link>
-        <router-link v-else to="/logout" @click="logout">
+        <router-link v-else to="/logout" @click="logout()">
           <h5>Logout</h5>
         </router-link>
-        <router-link v-if="isAdminUser" to="/profile">
+        <router-link v-if="checkLoginStatus" to="/profile">
           <h5>Profile</h5>
         </router-link>
       </div>
@@ -23,44 +23,35 @@
   </div>
 </template>
 <script setup>
-import { ref,computed } from 'vue';
+import { ref,computed,onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
+// onMounted(checkLoginStatus);
 const isLoggedIn = ref(false); 
 const router = useRouter(); 
 
 const logout=()=> {
-  isLoggedIn.value = false;
-  router.push('/login'); 
-}
-// const login=()=>{
-//   isLoggedIn.value=false;
-//   router.push('/login');
-// }
+  isLoggedIn.value = true;
 
-const checkLoginStatus=()=> {
-  const token = localStorage.getItem('token'); 
-  isLoggedIn.value = !!token; 
+  localStorage.clear();
+  router.push('/logout'); 
+}
+const login=()=>{
+  isLoggedIn.value=false;
+  router.push('/login');
 }
 
-checkLoginStatus();
+// check if use is logged in :computed property is computed lazily,Update this
+const checkLoginStatus=computed(()=> {
+const token = localStorage.getItem('token'); 
+if (token) {
+isLoggedIn.value = true;
+return true;
+} else {
+  return false;
+}
 
-const isAdminUser = computed(()  => {
-  const token = localStorage.getItem('token');
-  const role_id = localStorage.getItem('role_id');
-  if (token) {
-
-    // no need of decoding the token
-      // const decodedToken = jwt_decode(token);
-      if (role_id === "1") {
-        return true;
-      } else {
-        return false;
-      }
-      console.error("Error decoding JWT token:", error);
-    }
-  }
-)
+})
 
 </script>
 
