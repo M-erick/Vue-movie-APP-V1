@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 require('dotenv').config({ path: './config/.env' }); 
 const pool = mysql.createPool({
     connectionLimit: 10,
@@ -11,16 +11,15 @@ const pool = mysql.createPool({
 exports.createUser = async(userData) => {
     try {
 
-        // const roleIdQuery = 'SELECT id FROM roles WHERE name = "user"';
-        // const [roleResult] = await pool.query(roleIdQuery);
-        // const roleId = roleResult[0].id;
+        const roleIdQuery = 'SELECT id FROM roles WHERE name = "user"';
+        const [roleResult] = await pool.query(roleIdQuery);
+        const roleId = roleResult[0].id;
 
         // assigned a default user role_id here :will update it to be dynamic later
-        const roleId = 1;
+        // const roleId = 2;
 
         const query = `INSERT INTO users(first_name,last_name,password,email,role_id) VALUES(?,?,?,?,?)`;
-        const[result] =await pool.query(query,[userData.firstName,userData.lastName,userData.password,userData.email,roleId]);
-        return result;
+        pool.query(query,[userData.firstName,userData.lastName,userData.password,userData.email,roleId]);
         
     } catch (error) {
         throw error;
@@ -29,19 +28,29 @@ exports.createUser = async(userData) => {
     
 };
 
-exports.findUserByEmail = (email) => {
-    return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
-            if (error) {
-                reject(error);
-            } else {
-                if (results.length === 0) {
-                    resolve(null); // Return null if no user found
-                } else {
-                    resolve(results[0]); // Return the first user found
-                }
-            }
-        });
-    });
+exports.findUserByEmail = async(email) => {
+        try{
+            console.log('users');
+            const query = `SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id WHERE email = ?`;
+            const [users] = await pool.query(query,[email]);
+
+            // return that specific person 
+            return users[0] || null;    
+        }catch(error){
+            throw error;
+        }
+   
+    
 };
+
+exports.findUserById = async (id) => {
+    try {
+        const query = `SELECT * FROM users WHERE id = ?`;
+        const [results] = await pool.query(query, [id]);
+        return results.length > 0 ? results[0] : null; // Return the first user found or null if not found
+    } catch (error) {
+        throw error;
+    }
+}
+
 

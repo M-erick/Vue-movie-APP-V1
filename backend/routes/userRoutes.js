@@ -6,7 +6,7 @@ const authenticate = require('../middleware/authenticate');
 const app = express();
 
 // custom middleware
-app.use(authenticate);
+// app.use(authenticate);
 // applied validation on the data
 router.post('/register',[
     check('email', 'Please include a valid email').isEmail(),
@@ -20,5 +20,7 @@ router.post('/login',
     check('password', 'Password is required').exists(),
 ], userController.login);
 
+// get user by Id
+router.get('/:id',userController.findUserById);
 router.post('/logout', userController.logout);
 module.exports = router;

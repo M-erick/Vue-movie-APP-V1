@@ -57,13 +57,11 @@ const Movie = {
         }
     },
     searchMovies: async (searchQuery) => {
-
-      
-
         try {
             const query = `SELECT * FROM movies WHERE title LIKE ?`;
 
             const [results] = await pool.query(query, [`%${searchQuery}%`]);
+            console.log(results);
             return results;
         } catch (error) {
             throw error;
@@ -84,6 +82,9 @@ const Movie = {
         try {
         const query = 'SELECT * FROM movies WHERE rating >= ?'; 
         const [results] = await pool.query(query, [params]);
+        console.log(results);
+
+
           return results;
         } catch (error) {
           throw error;

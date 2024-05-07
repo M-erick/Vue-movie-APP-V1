@@ -75,8 +75,8 @@ exports.deleteMovie = async (req, res) => {
 exports.searchMovies = async (req, res) => {
   try {
     const { searchQuery } = req.query;
-    const movies = await Movie.searchMovies(searchQuery);
     console.log(searchQuery);
+    const movies = await Movie.searchMovies(searchQuery);
     res.json(movies);
   } catch (error) {
     console.error('Error searching movies:', error);
@@ -86,7 +86,9 @@ exports.searchMovies = async (req, res) => {
 // rename the method below after it works:getTopMovieByRating
 exports.getTopMoviesByGenre = async (req, res) => {
   try {
+    console.log('hey');
     const { defaultTop} = req.query;
+    console.log(defaultTop);
     const movies = await Movie.getTopMoviesByGenre(defaultTop);
     res.json(movies);
   } catch (error) {
