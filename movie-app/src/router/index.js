@@ -4,6 +4,7 @@ import MovieDetail from '../views/MovieDetail.vue'
 import Login from '../views/auth/Login.vue'
 import Registration from '../views/auth/Registration.vue'
 import Logout from '../views/auth/Logout.vue'
+import NotFound from '../views/NotFound.vue'
 // movies imports
 import Create from '../views/admin/Create.vue'
 import Update from '../views/admin/Update.vue'
@@ -12,6 +13,7 @@ import Add from '../views/admin/Add.vue'
 
 // user profile view page 
 import Profile from '../views/Profile.vue'
+
 
 const routes = [
   {
