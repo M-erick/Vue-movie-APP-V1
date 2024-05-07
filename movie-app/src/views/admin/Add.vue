@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
     <!-- Carousel of Images  implement carousel functionality here-->
-
+<!-- :style="{ backgroundImage: `url(${backgroundImage})` }"" -->
     <div id="carousel" >
       <!-- Navbar with Movie Genres -->
         <nav class="navbar">
@@ -142,6 +142,7 @@ const defaultTop = 7;
 // search  movies variables
 const searchQuery = ref("");
 const movies = ref([]);
+const backgroundImage = ref('../../assets/aquaman.jpeg');
 
 // fetch movies from movie endpoint:add the endpoint
 async function fetchMovies() {
@@ -222,15 +223,15 @@ const isAdminUser = computed(()  => {
 // change background Image on the topArea
 const changeBackground = async (imageNumber) => {
   // Example logic to change background image based on imageNumber
-  let imageUrl = '';
   switch (imageNumber) {
     case 1:
-      imageUrl = '../../assets/aquaman.jpeg';
+    backgroundImage.value='../../assets/jungleCruise.jpeg';
       break;
     case 2:
+      backgroundImage.value ='../../assets/moonFall.jpeg';
     case 3:
     case 4:
-      imageUrl = '../../assets/logo.png';
+    backgroundImage.value = '../../assets/BlackAdam.jpeg';
       break;
     default:
       break;
