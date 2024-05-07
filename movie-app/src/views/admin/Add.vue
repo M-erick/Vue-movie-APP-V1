@@ -2,8 +2,7 @@
   <div class="home-page">
     <!-- Carousel of Images  implement carousel functionality here-->
 
-    <!-- :style="{ backgroundImage: `url(${toggleIcons})` }" -->
-    <div id="carousel" :carousel="carousel" >
+    <div id="carousel" >
       <!-- Navbar with Movie Genres -->
         <nav class="navbar">
         <ul>
@@ -31,11 +30,11 @@
      
     </div>
      <!-- when a user clicks the icons  change the background image:font Awesome icons -->
-      <div id="toggle-icons" :toggle-icons="toggleIcons">
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(1)" :itemOne="itemOne"></i>
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(2)" :itemTwo="itemTwo"></i>
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(3)" :itemThree="itemThree"></i>
-        <i class="fa-regular fa-circle" style="color: white" @click="changeBackground(4)" :itemFour="itemFour"></i>
+      <div id="toggle-icons">
+        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(1)" ></i>
+        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(2)" ></i>
+        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(3)" ></i>
+        <i class="fa-regular fa-circle" style="color: white" @click="changeBackground(4)" ></i>
       </div>
       
     <!-- search Bar -->
@@ -84,12 +83,6 @@
                         </div>
                      </router-link>
             </div>
-
-           
-            
-                    
-
-                
         </div>
         
 
@@ -110,17 +103,13 @@
                         <div class="text-bottom-left">
                             <div style="padding-bottom:20px ;">
                                 <p>{{ movie.title }}</p>
-                                <p><span>Release Date: {{ movie.releaseDate }}</span></p>
 
-                                <div style="margin-top:-13px; display:flex; justify-content:left;gap:2px; ">
-                                    <i style=" font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star "></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;color: rgba(253,211,5,255);" class="fa-solid fa-star"></i>
-                                    <i style="font-size:8px;" class="fa-solid fa-star"></i>
-                
-                
-                                </div>
+                                <!-- update the date to human frienldy Format -->
+                                <p>Release Date: {{  new Date(movie.released_date) }}</p>
+
+
+                               
+                               
                             </div>
                         </div>
                         
@@ -136,27 +125,18 @@
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import{useRouter,useRoute} from 'vue-router';
-import jwt_decode from "jwt-decode";
 
 
 // handling routes:
 const router = useRouter();
 const route = useRoute();
-const carousel = ref(null);
-const toggleIcons = ref("");
 const topPicks = ref([]);
 const selectedGenre = ref("tv");
-const likedMovies = ref(new Set());
 
 // set user default to true:default login in user is admin 
 
 const defaultTop = 7;
 
-// toggle items
-const itemOne = ref("");
-const itemTwo = ref("");
-const itemThree = ref("");
-const itemFour = ref("");
 
 
 // search  movies variables
@@ -213,16 +193,6 @@ function isLiked(movieId) {
   return likedMovies.value.has(movieId);
 }
 
-// Function to handle liking a movie
-function likeMovie(movieId) {
-  // Add or remove the movie ID from the liked movies set:work on this later
-  if (likedMovies.value.has(movieId)) {
-    likedMovies.value.delete(movieId);
-  } else {
-    likedMovies.value.add(movieId);
-  }
-}
-
 // redirect use to creat page
 const handleCreate = ()=>{
   router.push('/create');
@@ -244,7 +214,6 @@ const isAdminUser = computed(()  => {
       } else {
         return false;
       }
-      console.error("Error decoding JWT token:", error);
     }
   }
 )
@@ -259,7 +228,6 @@ const changeBackground = async (imageNumber) => {
       imageUrl = '../../assets/aquaman.jpeg';
       break;
     case 2:
-      itemOne.style.backgroundImage="url()";
     case 3:
     case 4:
       imageUrl = '../../assets/logo.png';
@@ -267,7 +235,6 @@ const changeBackground = async (imageNumber) => {
     default:
       break;
   }
-  toggleIcons.value = imageUrl;
 };
 
 
