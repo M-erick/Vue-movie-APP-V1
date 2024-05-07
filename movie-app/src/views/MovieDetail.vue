@@ -49,6 +49,13 @@ async function fetchMovie() {
     movie.value = null;
   }
 }
+
+// function to set user that liked the movie 
+const storeLikes = async()=>{
+  
+
+}
+
 const likeMovie =()=> {
   // Send a request to your backend API to record the like for the movie
   isLiked.value = true;
