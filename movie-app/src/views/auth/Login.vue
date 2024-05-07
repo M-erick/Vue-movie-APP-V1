@@ -35,9 +35,11 @@ export default {
       email: email.value,
       password: password.value
     });
-    const token = response.data.token;
+    const { token, userRoleId,id } = response.data;
 
     localStorage.setItem('token', token);
+     localStorage.setItem('role_id', userRoleId);
+     localStorage.setItem('id',id);
 
     // Redirect the user to the home page 
     router.push('/');
