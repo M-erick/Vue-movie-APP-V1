@@ -63,7 +63,8 @@ export default {
   //  assessing the token from the local storage
    
 
-    router.push('/');
+  // when user registers ,be redireted to login
+    router.push('/login');
   } catch (err) {
     error.value = err.response.data.message || 'An error occurred';
   }
