@@ -3,12 +3,16 @@ import HomeView from '../views/HomeView.vue'
 import MovieDetail from '../views/MovieDetail.vue'
 import Login from '../views/auth/Login.vue'
 import Registration from '../views/auth/Registration.vue'
-
+import Logout from '../views/auth/Logout.vue'
 // movies imports
 import Create from '../views/admin/Create.vue'
 import Update from '../views/admin/Update.vue'
 import Read from '../views/admin/DisplayMovie.vue'
 import Add from '../views/admin/Add.vue'
+
+// user profile view page 
+import Profile from '../views/Profile.vue'
+
 const routes = [
   {
     // home routes:update this once functionality is tested
@@ -26,6 +30,11 @@ const routes = [
     path:'/login',
     name:'Login',
     component:Login
+  },
+  {
+    path:'/logout',
+    name:'Logout',
+    component:Logout
   },
   
   {
@@ -55,6 +64,20 @@ const routes = [
     path:'/movies',
     name:'Read',
     component:Read
+  },
+  // user profile
+  {
+    path:'/profile',
+    name:'Profile',
+    component:Profile
+
+  },
+   
+  //all 404
+  {
+    path:'/:catchAll(.*)',
+    name:'NotFound',
+    component:NotFound
   }
  
 ]
