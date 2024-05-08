@@ -7,12 +7,12 @@
         <nav class="navbar">
         <ul>
             <!-- use style binding here,if a use clicks the navbar set it to color and undeline -->
-          <li @click="updateGenre('trending')" id="trendingIcons">Trending</li>
+          <li @click="updateGenre('fiction')" id="trendingIcons">Trending</li>
 
           <li @click="updateGenre('tv')">TV/Series</li>
           <li @click="updateGenre('animation')">Animation</li>
           <li @click="updateGenre('documentary')">Documentary</li>
-          <li @click="updateGenre('movies')">Movies</li>
+          <li @click="updateGenre('movie')">Movies</li>
           <li @click="updateGenre('drama')">Drama</li>
          
           <!-- appear only on  the admin side :work on this -->
@@ -131,7 +131,9 @@ import{useRouter,useRoute} from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 const topPicks = ref([]);
-const selectedGenre = ref("tv");
+
+// set by default trending on default
+const selectedGenre = ref("fiction");
 
 // set user default to true:default login in user is admin 
 
@@ -176,7 +178,7 @@ const filteredMovies = computed(() => {
 async function fetchTopPicks() {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/movies?top=${defaultTop}`
+      `http://localhost:3000/api/movies/top?topQuery=${selectedGenre.value}`
     );
     topPicks.value = response.data;
   } catch (error) {
