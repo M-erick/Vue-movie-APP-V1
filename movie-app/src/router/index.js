@@ -13,7 +13,7 @@ import Add from '../views/admin/Add.vue'
 
 // user profile view page 
 import Profile from '../views/Profile.vue'
-
+import {jwtDecode as jwt_decode} from 'jwt-decode'
 
 const routes = [
   {
@@ -48,14 +48,16 @@ const routes = [
   {
     path:'/create',
     name:Create,
-    component:Create
+    component:Create,
+    meta: { requiresAuth: true }
   },
   // update individual movie items
   {
     path:'/update/:id/edit',
     name:'Update',
     component:Update,
-    props: true
+    props: true,
+    meta:{requiresAuth:true}
   },
   // {
   //   path:'/Add',
@@ -71,7 +73,8 @@ const routes = [
   {
     path:'/profile',
     name:'Profile',
-    component:Profile
+    component:Profile,
+    meta: { requiresAuth: true }
 
   },
    
@@ -88,5 +91,30 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+// vue.js:Navigation Guards
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !isUserLoggedIn()) {
+    next('/login');
+  } else {
+    next(); 
+  }
+});
+
+const isUserLoggedIn = () => {
+  const userToken = localStorage.getItem('token');
+  if (!userToken) {
+    return false; // Token not found, user is not logged in
+  }
+  try {
+    const decodedToken = jwt_decode(userToken);
+    return decodedToken.exp > Date.now() / 1000; // Check token expiration
+  } catch (error) {
+    console.error('Invalid token:', error);
+    return false; // Invalid token, user is not logged in
+  }
+};
+
+
+
 
 export default router
