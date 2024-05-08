@@ -105,7 +105,7 @@
                                 <p>{{ movie.title }}</p>
 
                                 <!-- update the date to human frienldy Format -->
-                                <p>Release Date: {{  new Date(movie.released_date) }}</p>
+                                <p>Release Date: {{  new Date(movie.released_date).toLocaleDateString() }}</p>
 
 
                                
