@@ -43,21 +43,12 @@
         type="text"
         placeholder="search movie"
         value=""
-        v-model="searchQuery"
+        v-model.trim="searchQuery"
       />
       <input type="submit" value="Search" />
     </form>
 
-    <!-- Display Top Picks in Cards -->
-    <!-- <div class="top-picks">
-      <h2 id="title">Top Picks</h2>
-      <div class="movie-cards">
-        <div v-for="movie in topPicks" :key="movie.id" class="movie-card">
-          <img :src="movie.image" :alt="movie.title" />
-          
-        </div>
-      </div>
-    </div> -->
+   
     <div class="top-picks">
         <h2 id="title">Top Picks</h2>
         <div class="searchedItems">
@@ -66,7 +57,7 @@
          <div  v-for="movie in topPicks" :key="movie.id"  class="top-pick-card">
                     <router-link :to="'/movie/' + movie.id">
                 <!--  img:fetched image from the data -->
-                        <img src="../../assets/BlackAdam.jpeg"  style=" border-radius: 5px; " alt="Image 1">
+                        <img :src="getMovieImageUrl(movie.image_url)" style=" border-radius: 5px; " alt="Image 1">
                         <div class="text-bottom-left">
                             <div style="padding-bottom:20px ;">
 
@@ -89,7 +80,7 @@
 
 
     </div>
-    <div class="searched-info">
+    <div  class="searched-info">
       <h2>Search Results... </h2>
       <div class="searchedItems">
         <!-- the data below is dynamic:update it with the fetched data -->
@@ -97,7 +88,7 @@
 
                      <div v-for="movie in filteredMovies" :key="movie.id" class="image-with-text">
                 
-                        <img src="../../assets/BlackAdam.jpeg" width="350" style=" border-radius: 5px; " alt="Image 1">
+                        <img :src="getMovieImageUrl(movie.image_url)" width="350" style=" border-radius: 5px; " alt="Image 1">
                 
                         <p class="text-top-right">{{ movie.genre }}</p>
                         <div class="text-bottom-left">
@@ -148,6 +139,10 @@ const backgroundImage = ref('../../assets/aquaman.jpeg');
 
 // fetch movies from movie endpoint:add the endpoint
 async function fetchMovies() {
+  
+
+    
+  
   try {
     const response = await axios.get(
       `http://localhost:3000/api/movies/search?searchQuery=${searchQuery.value}`
@@ -169,6 +164,7 @@ onMounted(fetchTopPicks);
 
 // to filter  movie  from the database based on search Parameter:
 const filteredMovies = computed(() => {
+
   return movies.value.filter((movie) =>
     movie.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
@@ -240,7 +236,10 @@ const changeBackground = async (imageNumber) => {
   }
 };
 
-
+// fetch image url from localhost
+function getMovieImageUrl(imagePath) {
+  return `http://localhost:3000/${imagePath}`;
+}
 
 </script>
 
