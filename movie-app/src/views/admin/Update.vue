@@ -19,6 +19,10 @@
         <input type="date" id="releaseDate" v-model="formData.releaseDate" placeholder="Release Date">
       </div>
       <div class="form-group">
+        <label for="image">Image:</label>
+        <input type="file" id="image" @change="onFileChange" name="image">
+      </div>
+      <div class="form-group">
         <label for="rating">Rating:</label>
         <input type="number" id="rating" v-model="formData.rating" min="1" max="10" placeholder="Rating">
       </div>
@@ -58,7 +62,8 @@ async function fetchMovieDetails() {
       description: movie.description,
       genre: movie.genre,
       releaseDate: movie.released_date,
-      rating: movie.rating
+      rating: movie.rating,
+      imageUrl: movie.image_url
     };
   } catch (error) {
     console.error('Failed to fetch movie details:', error);
@@ -69,13 +74,33 @@ async function fetchMovieDetails() {
 // const movieId = route.params.id;
 async function updateMovie() {
   try {
-    await axios.put(`http://localhost:3000/api/movies/${movieId.value}`, formData.value);
+    const formDataObj = new FormData();
+    formDataObj.append('title', formData.value.title);
+    formDataObj.append('description', formData.value.description);
+    formDataObj.append('genre', formData.value.genre);
+    formDataObj.append('releaseDate', formData.value.releaseDate);
+    formDataObj.append('rating', formData.value.rating);
+    formDataObj.append('image', formData.value.image); 
+
+    await axios.put(`http://localhost:3000/api/movies/${movieId.value}`, formDataObj, {
+      headers: {
+        'Content-Type': 'multipart/form-data' 
+      }
+    });
     // Redirect to movies list after updating
     router.push('/movies');
   } catch (error) {
     console.error('Failed to update movie:', error);
   }
 }
+
+
+// file update uploads 
+function onFileChange(event) {
+  const file = event.target.files[0];
+  formData.value.image = file;
+}
+
 </script>
 
 <style scoped>
