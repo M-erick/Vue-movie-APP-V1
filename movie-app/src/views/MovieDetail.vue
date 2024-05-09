@@ -65,7 +65,7 @@ const storeLikes = async()=>{
   try{
     const response = await axios.post( `http://localhost:3000/api/likes`,userLikes.value);
     console.log(response.data);
-
+localStorage.setItem(`userLikes.value`,true);
   }catch(error){
     console.error('Failed to store user Details',error);
 
