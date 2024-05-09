@@ -16,8 +16,8 @@ const Movie = {
     // Create a new movie entry
     createMovie: async (movieData) => {
         try {
-            const query = `INSERT INTO movies (title, description, genre, released_date,rating) VALUES (?, ?, ?, ?,?)`;
-            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date,movieData.rating]);
+            const query = `INSERT INTO movies (title, description, genre, released_date,rating,image_url) VALUES (?, ?, ?, ?,?,?)`;
+            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date,movieData.rating,movieData.image]);
             return result;
         } catch (error) {
             throw error;
@@ -49,8 +49,8 @@ const Movie = {
     // Update a movie
     updateMovie: async (id, movieData) => {
         try {
-            const query = `UPDATE movies SET title = ?, description = ?, genre = ?, released_date = ?,rating= ? WHERE id = ?`;
-            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date,movieData.rating, id]);
+            const query = `UPDATE movies SET title = ?, description = ?, genre = ?, released_date = ?,rating= ?, image_url= ? WHERE id = ?`;
+            const [result] = await pool.query(query, [movieData.title, movieData.description, movieData.genre, movieData.release_date,movieData.rating,movieData.image, id]);
             return result;
         } catch (error) {
             throw error;
@@ -78,10 +78,10 @@ const Movie = {
             throw error;
         }
     },
-    getTopMoviesByGenre:async(params)=> {
+    getTopMoviesByGenre:async(topQuery)=> {
         try {
-        const query = 'SELECT * FROM movies WHERE rating >= ?'; 
-        const [results] = await pool.query(query, [params]);
+        const query = 'SELECT * FROM movies WHERE genre LIKE ?'; 
+        const [results] = await pool.query(query, [`%${topQuery}%`]);
         console.log(results);
 
 

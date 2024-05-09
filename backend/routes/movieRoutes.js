@@ -2,11 +2,18 @@ const express = require('express');
 const router = express.Router();
 const movieController = require('../controllers/movieController');
 const authenticate = require('../middleware/authenticate');
+const multer = require('multer');
+
+const upload = multer({ 
+dest: 'uploads/',
+limits: {
+    fileSize: 1024 * 1024 * 5 // 5MB file size limit
+} });
 
 // applying authenticate middleware to movie endpoints:this should be to selected parts only
 
 // Create a new movie
-router.post('/', movieController.createMovie);
+router.post('/',upload.single('image'),movieController.createMovie);
 
 // Get all movies
 router.get('/', movieController.getAllMovies);
@@ -21,7 +28,7 @@ router.get('/top', movieController.getTopMoviesByGenre);
 router.get('/:id', movieController.getMovieById);
 
 // Update a movie by ID
-router.put('/:id', movieController.updateMovie);
+router.put('/:id',upload.single('image'), movieController.updateMovie);
 
 // Delete a movie by ID
 router.delete('/:id', movieController.deleteMovie);

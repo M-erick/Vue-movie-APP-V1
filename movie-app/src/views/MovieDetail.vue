@@ -34,13 +34,23 @@ const movie = ref(null);
 const router = useRouter();
 const isLiked = ref(false);
 const route = useRoute();
+
+
+// store user info
+const userLikes = ref({
+  user_id:localStorage.getItem('id'),
+  movie_id:route.params.id
+
+});
+// setting the values here by default 
+// userLikes.user_id = localStorage.getItem('id');
+// userLikes.movie_id  = route.params.id;
 // message to be sent when a user likes a movie
 const message = ref('');
 
 onMounted(fetchMovie);
 async function fetchMovie() {
   const movieID = route.params.id;
-  console.log(movieID);
   try {
     const response = await axios.get(`http://localhost:3000/api/movies/${movieID}`);
     movie.value = response.data;
@@ -52,16 +62,25 @@ async function fetchMovie() {
 
 // function to set user that liked the movie 
 const storeLikes = async()=>{
-  
+  try{
+    const response = await axios.post( `http://localhost:3000/api/likes`,userLikes.value);
+    console.log(response.data);
 
+  }catch(error){
+    console.error('Failed to store user Details',error);
+
+  }
 }
 
 const likeMovie =()=> {
   // Send a request to your backend API to record the like for the movie
-  isLiked.value = true;
-
-  // O display a message 
-  message.value = 'Movie Liked ';
+  if (!isLiked.value) {
+    storeLikes();
+    isLiked.value = true;
+    // Display a message
+    message.value = 'Movie Liked';
+  }
+  
 
 }
 </script>

@@ -20,6 +20,11 @@ module.exports = (req, res, next) => {
       return res.status(401).json({ message: 'Failed to authenticate token' });
     }
 
+    // check user  role from fetched Data 
+    // if (decoded.role !== '1') {
+    //   return res.status(403).json({ message: 'Unauthorized' });
+    //         // redirect user back to home page:implement this part
+    // }
     // If token is valid, attach user information to request
     req.user = decoded;
     next();

@@ -3,12 +3,15 @@ const Movie = require('../models/Movie');
 exports.createMovie = async (req, res) => {
   try {
     const { title, description, genre, releaseDate,rating } = req.body;
+// check if file is present
+    const imagePath = req.file ? req.file.path : null; 
     const movieData = {
       title,
       description,
       genre,
       rating,
-      release_date: releaseDate
+      release_date: releaseDate,
+      image:imagePath
     };
     const result = await Movie.createMovie(movieData);
     res.status(201).json({ message: 'Movie created successfully'});
@@ -47,12 +50,15 @@ exports.updateMovie = async (req, res) => {
     const { id } = req.params;
     // destructure the  request body
     const { title, description, genre, releaseDate,rating } = req.body;
+    const imagePath = req.file ? req.file.path : null; 
+
     const movieData = {
       title,
       description,
       genre,
       rating,
-      release_date: releaseDate
+      release_date: releaseDate,
+      image:imagePath
     };
     await Movie.updateMovie(id, movieData);
     res.json({ message: 'Movie updated successfully', movieId: id });
@@ -86,10 +92,9 @@ exports.searchMovies = async (req, res) => {
 // rename the method below after it works:getTopMovieByRating
 exports.getTopMoviesByGenre = async (req, res) => {
   try {
-    console.log('hey');
-    const { defaultTop} = req.query;
-    console.log(defaultTop);
-    const movies = await Movie.getTopMoviesByGenre(defaultTop);
+    const { topQuery} = req.query;
+    console.log(topQuery);
+    const movies = await Movie.getTopMoviesByGenre(topQuery);
     res.json(movies);
   } catch (error) {
     console.error('Error fetching top movies by genre:', error);
