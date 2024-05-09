@@ -22,6 +22,10 @@
         <label for="rating">Rating:</label>
         <input type="number" id="rating" v-model.number="formData.rating" min="1" max="10" placeholder="Rating">
       </div>
+      <div class="form-group">
+        <label for="image">Image:</label>
+        <input type="file" id="image" @change="onFileChange" name="image">
+      </div>
       <button type="submit">Create</button>
     </form>
   </div>
@@ -39,16 +43,31 @@ const formData = ref({
   description: '',
   genre: '',
   releaseDate: '',
-  rating: null
+  rating: null,
+  image:null,
 });
+
+function onFileChange(event) {
+  const file = event.target.files[0];
+  formData.value.image = file;
+}
 
 async function createMovie() {
   try {
-    await axios.post(`http://localhost:3000/api/movies`, formData.value);
-  //  Redirect to the movies list page after 2 seconds
-    setTimeout(()=>{
-      router.push('/');
-    },2000);
+    const formDataObj = new FormData();
+    formDataObj.append('title', formData.value.title);
+    formDataObj.append('description', formData.value.description);
+    formDataObj.append('genre', formData.value.genre);
+    formDataObj.append('releaseDate', formData.value.releaseDate);
+    formDataObj.append('rating', formData.value.rating);
+    formDataObj.append('image', formData.value.image);
+
+    await axios.post(`http://localhost:3000/api/movies`, formDataObj, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    router.push('/'); // Redirect to movies list page
   } catch (error) {
     console.error('Failed to create movie:', error);
   }
