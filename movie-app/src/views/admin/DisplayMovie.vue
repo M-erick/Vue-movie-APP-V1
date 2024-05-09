@@ -6,6 +6,8 @@
         <div class="movie-info">
           <h3>{{ movie.title }}</h3>
           <p>{{ movie.description }}</p>
+          <!-- fetching  from DB -->
+          <img :src="getMovieImageUrl(movie.image_url)" alt="Movie Image" class="movie-image" />
         </div>
         <div class="movie-buttons">
           <button class="delete-button" @click="deleteMovie(movie.id)">Delete</button>
@@ -45,6 +47,9 @@ async function deleteMovie(movieId) {
   }
 }
 
+function getMovieImageUrl(imagePath) {
+  return `http://localhost:3000/${imagePath}`;
+}
 async function editMovie(movieId) {
   // Implement edit functionality, e.g., redirect to edit page or show modal
   router.push(`/update/${movieId}/edit`);
