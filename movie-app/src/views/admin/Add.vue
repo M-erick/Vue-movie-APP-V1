@@ -140,9 +140,11 @@ const backgroundImage = ref('../../assets/aquaman.jpeg');
 // fetch movies from movie endpoint:add the endpoint
 async function fetchMovies() {
   
+if(!searchQuery.value){
+  movies.value= [];
+  return;
+}
 
-    
-  
   try {
     const response = await axios.get(
       `http://localhost:3000/api/movies/search?searchQuery=${searchQuery.value}`
