@@ -87,6 +87,8 @@
 
 
                      <div v-for="movie in filteredMovies" :key="movie.id" class="image-with-text">
+                      <router-link :to="'/movie/' + movie.id">
+
                 
                         <img :src="getMovieImageUrl(movie.image_url)" width="350" style=" border-radius: 5px; " alt="Image 1">
                 
@@ -103,6 +105,8 @@
                                
                             </div>
                         </div>
+                      </router-link>
+
                         
                 
                     </div>
