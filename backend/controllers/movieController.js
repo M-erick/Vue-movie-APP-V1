@@ -101,4 +101,17 @@ exports.getTopMoviesByGenre = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching top movies by genre' });
   }
 };
+exports.getRating=async(req,res)=>{
+  try {
+    const { ratingQuery} = req.query;
+    // console.log(req.query);
+    const movies = await Movie.getRatingTop(ratingQuery);
+    res.json(movies);
+    
+  } catch (error) {
+    console.error('Error fetching top movies by rating:', error);
+    res.status(500).json({ error: 'An error occurred while fetching top movies by rating' });
+    
+  }
+}
 

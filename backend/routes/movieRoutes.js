@@ -24,6 +24,8 @@ router.get('/search', movieController.searchMovies);
 //Get top movies of a specific genre
 router.get('/top', movieController.getTopMoviesByGenre);
 
+// get top movies by rating 
+router.get('/tops/rating', movieController.getRating);
 // Get a single movie by ID
 router.get('/:id', movieController.getMovieById);
 

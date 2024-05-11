@@ -89,6 +89,20 @@ const Movie = {
         } catch (error) {
           throw error;
         }
+      },
+      getRatingTop:async(ratingQuery)=>{
+        try {
+
+            const query = 'SELECT * FROM movies WHERE rating >= ?';
+            const [results] = await pool.query(query, [ratingQuery]);
+            // console.log(results);
+            
+            return results;
+            
+        } catch (error) {
+            throw error;
+            
+        }
       }
 };
 
