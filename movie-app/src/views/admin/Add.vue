@@ -80,7 +80,7 @@
 
 
     </div>
-    <div  class="searched-info">
+    <div v-if="filteredMovies.length > 0" class="searched-info">
       <h2>Search Results... </h2>
       <div class="searchedItems">
         <!-- the data below is dynamic:update it with the fetched data -->
