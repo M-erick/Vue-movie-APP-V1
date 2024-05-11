@@ -4,9 +4,10 @@
     <div v-if="movie">
       <h2>{{ movie.title }}</h2>
     <div class="movie-details">
-      <!-- <div class="movie-image">
-        <img :src="movie.image" :alt="movie.title">
-      </div> -->
+      
+      <div class="movie-image">
+        <img :src="getMovieImageUrl(movie.image_url)" :alt="movie.title">
+      </div>
       <div class="movie-description">
         <p>{{ movie.description }}</p>
         <p>Rating: {{ movie.rating }}</p>
@@ -58,6 +59,11 @@ async function fetchMovie() {
     console.error('Failed to fetch movie:', error);
     movie.value = null;
   }
+}
+
+// fetch image url from localhost
+function getMovieImageUrl(imagePath) {
+  return `http://localhost:3000/${imagePath}`;
 }
 
 // function to set user that liked the movie 
