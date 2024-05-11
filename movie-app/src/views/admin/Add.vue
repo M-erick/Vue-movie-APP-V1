@@ -7,7 +7,7 @@
         <nav class="navbar">
         <ul>
             <!-- use style binding here,if a use clicks the navbar set it to color and undeline -->
-          <li @click="updateGenre('fiction')" id="trendingIcons">Trending</li>
+          <li @click="updateRated()" id="trendingIcons">Trending</li>
 
           <li @click="updateGenre('tv')">TV/Series</li>
           <li @click="updateGenre('animation')">Animation</li>
@@ -126,6 +126,7 @@ import{useRouter,useRoute} from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 const topPicks = ref([]);
+const topRated = ref([]);
 
 // set by default trending on default
 const selectedGenre = ref("fiction");
@@ -164,6 +165,7 @@ if(!searchQuery.value){
 
 //:uncomment the onmounted part once data is fetchedFetch top picks for the selected genre when the component is mounted
 onMounted(fetchTopPicks);
+onMounted(fetchTopRated);
 
 // searched data should dissappear once page is reloaded
 // onMounted(fetchMovies);
@@ -188,12 +190,28 @@ async function fetchTopPicks() {
   }
 }
 
+async function fetchTopRated(){
+  try {
+    const response = await axios.get(`http://localhost:3000/api/movies/tops/rating?ratingQuery=${defaultTop}`);
+
+    topPicks.value = response.data;
+    
+  } catch (error) {
+    console.error("Failed to fetch top  rated Movies:", error);
+    
+  }
+}
+
 // Function to update the selected genre and fetch top picks
 function updateGenre(genre) {
   selectedGenre.value = genre;
   fetchTopPicks();
 }
 
+function updateRated() {
+  // selectedGenre.value = genre;
+  fetchTopRated();
+}
 function isLiked(movieId) {
   return likedMovies.value.has(movieId);
 }
