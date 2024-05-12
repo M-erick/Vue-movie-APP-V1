@@ -216,7 +216,7 @@ function isLiked(movieId) {
   return likedMovies.value.has(movieId);
 }
 
-// redirect use to creat page
+// redirect use to creat page :function should be updated
 const handleCreate = ()=>{
   router.push('/create');
 }
