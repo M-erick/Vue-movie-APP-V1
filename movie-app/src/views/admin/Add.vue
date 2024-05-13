@@ -7,7 +7,7 @@
         <nav class="navbar">
         <ul>
             <!-- use style binding here,if a use clicks the navbar set it to color and undeline -->
-          <li @click="updateRated()" id="trendingIcons">Trending</li>
+          <li @click="updateRated()" >Trending</li>
 
           <li @click="updateGenre('tv')">TV/Series</li>
           <li @click="updateGenre('animation')">Animation</li>
@@ -29,13 +29,7 @@
       
      
     </div>
-     <!-- when a user clicks the icons  change the background image:font Awesome icons -->
-      <div id="toggle-icons">
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(1)" ></i>
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(2)" ></i>
-        <i class="fa-solid fa-circle" style="font-size: 14px; color: black" @click="changeBackground(3)" ></i>
-        <i class="fa-regular fa-circle" style="color: white" @click="changeBackground(4)" ></i>
-      </div>
+    
       
     <!-- search Bar -->
     <form @submit.prevent="fetchMovies()" class="search-box">
@@ -58,18 +52,14 @@
                     <router-link :to="'/movie/' + movie.id">
                 <!--  img:fetched image from the data -->
                         <img :src="getMovieImageUrl(movie.image_url)" style=" border-radius: 5px; " alt="Image 1">
-                        <div class="text-bottom-left">
+                        <div class="">
                             <div style="padding-bottom:20px ;">
 
                                 <!-- Below should be the movie Rating -->
-                                <p  style="color:white">{{ movie.title }}</p>
-                                 <div class="top-pick-card-star">
-                                    <i style=" font-size:14px;color: crimson;" class="fa-solid fa-star "></i>
-                                    <i style="font-size:14px;color: crimson;" class="fa-solid fa-star"></i>
-                                    <i style="font-size:14px; color:black" class="fa-solid fa-star"></i>
-                
-                
-                                </div>
+                                <p style="color:crimson; font-weight:bold; text-align:left; padding-left:5px"><i class="fa-solid fa-star" style="padding-right:5px;"></i>{{movie.rating}}</p>
+                                <p  style="color:black">{{ movie.title }}</p>
+                               
+                                <button class="watchlist"><i style="color:crimson;padding-right:5px;" class="fa-solid fa-circle-plus"></i>WATCHLIST</button>
                             </div>
                         </div>
                      </router-link>
@@ -314,6 +304,13 @@ color: crimson;
   color: black;
 }
 
+.watchlist{
+  align-items: center;
+  border-radius: 15px;
+  border: 1px solid black;
+  padding: 5px 18px;
+  font-weight: 300;
+}
 /* end of the  search styling */
 
 /* top Pick card */
@@ -323,7 +320,7 @@ color: crimson;
   margin: 10px;
   /* border: 1px solid rgb(141, 39, 60); */
   border-radius: 8px;
-  padding: 5px;
+  /* padding: 5px; */
 }
 .top-pick-card .text-bottom-left{
    position: absolute;
@@ -338,6 +335,12 @@ color: crimson;
 display: flex;
 justify-content: left;
 gap: 2px;
+}
+
+.top-pick__nav{
+  display: flex;
+  justify-content: space-between;
+
 }
 .navbar {
   background-color: #333;
@@ -369,7 +372,7 @@ gap: 2px;
   margin: 0 !important;
   height: 400px;
 
-  background-image: url("../../assets/BlackAdam.jpeg");
+  background-image: url("../../assets/newEvent.png");
   background-size: cover;
 }
 #toggle-icons {
@@ -386,7 +389,25 @@ gap: 2px;
   flex-wrap: wrap;
 }
 #title {
+  text-align: left;
+  font-size: 25px;
+  color:#353232;
+
+
+}
+#title  span {
+   font-size: 60px;
+   color: crimson;
+}
+#ViewAll{
+  padding-top:35px;
+  padding-right: 15px;
   text-align: center;
+}
+#ViewAll:hover{
+  color: crimson;
+  padding-bottom: 2px;
+  border-bottom: 2px solid crimson;
 }
 .movie-card {
   width: 250px;
@@ -436,7 +457,7 @@ gap: 2px;
 .search-box input[type="text"] {
   width: 100%;
   color: #fff;
-  background-color: #496583;
+  background-color: rgb(189, 43, 72);
   font-size: 20px;
   padding: 10px 16px;
   border-radius: 8px;
