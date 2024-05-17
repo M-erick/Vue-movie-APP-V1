@@ -70,6 +70,8 @@
 
 
     </div>
+    <Card/>
+    
     <div v-if="filteredMovies.length > 0" class="searched-info">
       <h2>Search Results... </h2>
       <div class="searchedItems">
@@ -110,7 +112,8 @@
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import{useRouter,useRoute} from 'vue-router';
-
+// import Card  from ' ../../../components/MovieCard.vue';
+import Card from '../../components/MovieCard.vue';
 
 // handling routes:
 const router = useRouter();
@@ -232,23 +235,7 @@ const isAdminUser = computed(()  => {
 )
 
 
-// change background Image on the topArea
-const changeBackground = async (imageNumber) => {
-  // Example logic to change background image based on imageNumber
-  switch (imageNumber) {
-    case 1:
-    backgroundImage.value='../../assets/jungleCruise.jpeg';
-      break;
-    case 2:
-      backgroundImage.value ='../../assets/moonFall.jpeg';
-    case 3:
-    case 4:
-    backgroundImage.value = '../../assets/BlackAdam.jpeg';
-      break;
-    default:
-      break;
-  }
-};
+
 
 // fetch image url from localhost
 function getMovieImageUrl(imagePath) {
